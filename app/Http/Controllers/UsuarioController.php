@@ -40,7 +40,7 @@ class UsuarioController extends Controller
        //validar
       $request->validate([
         "name"=>"required",
-        "email"=> "required|email|unique:users",
+        "email"=> "required|email|unique:users", 
         "password"=> "required"
       ]);
        //guardar
