@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Categoria;
+use App\Models\Producto;
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\Return_;
 
-class CategoriaController extends Controller
+class ProductoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +16,9 @@ class CategoriaController extends Controller
      */
     public function index()
     {
-       $categorias = Categoria::paginate(10);
-       return view("admin.categoria.index", compact("categorias"));
-
+        $productos = Producto::get();
+        $categorias = Categoria::get();
+        return view("admin.producto.index", compact("productos", "categorias"));
     }
 
     /**
@@ -37,19 +39,31 @@ class CategoriaController extends Controller
      */
     public function store(Request $request)
     {
-        //validamos
+        // return $request;
         $request->validate([
-            "nombre" => "required"
+            "nombre" => "required",
+            "categoria_id" => "required",
+
         ]);
+        //guardar
+        $prod  = new Producto();
+        $prod->nombre = $request->nombre;
+        $prod->precio = $request->precio;
+        $prod->stock = $request->stock;
+        $prod->descrpcion = $request->descrpcion;
+        $prod->categoria_id = $request->categoria_id;
+        $nombre_img = "";
+        if ($file = $request->file("imagen")) {
+            $direccion_imagen = time()."-". $file->getClientOriginalName();
+            $file->move("imagenes/", $direccion_imagen);
+            $nombre_img = "imagenes/". $direccion_imagen;
 
-        //guardamos
-        $cat = new Categoria;
-        $cat -> nombre = $request->nombre;
-        $cat -> detalle = $request->detalle;
-        $cat -> save();
-        //respuesta
-
-        return redirect("/admin/categoria");
+            $prod ->imagen = $nombre_img;
+        }
+        $prod->save();
+       
+       //responder
+        return redirect("/admin/producto") ->with("mensaje", "Producto Registrado");
     }
 
     /**
@@ -60,12 +74,8 @@ class CategoriaController extends Controller
      */
     public function show($id)
     {
-        $Categoria = Categoria::find($id);
-        $productos = $Categoria->productos;
-        $categorias = Categoria::get();
-
-        return view("admin.producto.index",compact("productos","categorias"));
-    } 
+        //
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -87,20 +97,7 @@ class CategoriaController extends Controller
      */
     public function update(Request $request, $id)
     {
-         //validamos
-         $request->validate ([
-            "nombre" => "required"
-        ]);
-
-        //guardamos
-        $cat = Categoria :: find($id );
-        $cat -> nombre = $request->nombre;
-        $cat -> detalle = $request->detalle;
-        $cat -> save();
-        //respuesta
-
-        return redirect("/admin/categoria");
-
+        //
     }
 
     /**

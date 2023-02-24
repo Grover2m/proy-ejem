@@ -10,11 +10,11 @@ class UsuarioController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response 
      */
     public function index()
     {
-        $usuarios = User::get();
+        $usuarios = User::paginate(3);
         return view("admin.usuario.listar",compact("usuarios"));
     }
 
@@ -50,7 +50,7 @@ class UsuarioController extends Controller
        $usuario-> password = bcrypt($request->password);
        $usuario -> save();
        //responder
-       return redirect("/usuario");
+       return redirect("admin/usuario");
     }
 
     /**
@@ -96,7 +96,7 @@ class UsuarioController extends Controller
         $usuario-> email = $request->email;
         $usuario-> password = bcrypt($request->password);
         $usuario -> update();
-        return redirect("/usuario");
+        return redirect("/admin/usuario");
     }
 
     /**
@@ -109,7 +109,7 @@ class UsuarioController extends Controller
     {
         $usuario = User::FindOrFail($id);
         $usuario->delete();
-        return redirect("/usuario");
+        return redirect("/admin/usuario");
 
     }
 }

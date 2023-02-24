@@ -10,8 +10,8 @@
     </div>
     <div class="card-body">
 
-        
-        <table class = "table table-striped table-hover ">
+
+        <table class="table table-striped table-hover ">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -28,14 +28,15 @@
                     <td>{{ $user->name}}</td>
                     <td>{{ $user->email}}</td>
                     <td>
-                        <a href="{{ route('usuario.edit', $user->id) }}" class = "btn btn-warning"><i class = "fa fa-edit"></i></a>
-                        <a href="{{ route('usuario.show', $user->id) }}" class = "btn btn-success"><i class= "fa fa-eye"></i></a>
+                        <a href="{{ route('usuario.edit', $user->id) }}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+                        <a href="{{ route('usuario.show', $user->id) }}" class="btn btn-success"><i class="fa fa-eye"></i></a>
                     </td>
                 </tr>
                 @endforeach
             </tbody>
-
+            
         </table>
+        {{ $usuarios->links()}}
     </div>
 </div>
 
